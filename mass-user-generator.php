@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Mass User Generator
-Plugin URI: https://ameerbaksh.cloud
+Plugin URI: https://github.com/aamirpali/Mass-User-Generator-WordPress
 Description: A simple WordPress plugin to generate multiple users with options.
 Version: 1.0
 Author: Ameer Baksh
