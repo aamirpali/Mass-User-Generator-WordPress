@@ -1,4 +1,5 @@
 === Plugin Name ===
+
 Mass User Generator
 Contributors: Ameer Baksh
 Tags: user generator, mass user creation, WordPress users
