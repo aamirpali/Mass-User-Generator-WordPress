@@ -1,24 +1,39 @@
 <?php
-
-// Enqueue Bootstrap CSS and custom CSS for the admin area
-function enqueue_admin_styles() {
-    wp_enqueue_style('bootstrap-css', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
-    wp_enqueue_style('custom-css', plugin_dir_url(__FILE__) . 'style.css');
+// Block direct access
+if (!defined('ABSPATH')) {
+    exit;
 }
 
-// Enqueue your admin styles
-add_action('admin_enqueue_scripts', 'enqueue_admin_styles');
+// Scoped Admin Styles
+function enqueue_mass_user_admin_styles($hook) {
+    if ($hook !== 'toplevel_page_user-generator') {
+        return;
+    }
 
+    wp_enqueue_style(
+        'mass-user-generator-css', 
+        plugin_dir_url(dirname(__FILE__)) . 'style.css', 
+        array(), 
+        '1.1'
+    );
+}
+add_action('admin_enqueue_scripts', 'enqueue_mass_user_admin_styles');
+
+// Dynamically injected Analytics
 function add_analytics_code() {
+    $ga_id = get_option('mug_ga_tracking_id', '');
+    
+    if (empty($ga_id)) {
+        return;
+    }
     ?>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_ID"></script>
+    <!-- Mass User Generator Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr($ga_id); ?>"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag() {
-            dataLayer.push(arguments);
-        }
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-        gtag('config', 'YOUR_GA_ID');
+        gtag('config', '<?php echo esc_js($ga_id); ?>');
     </script>
     <?php
 }
